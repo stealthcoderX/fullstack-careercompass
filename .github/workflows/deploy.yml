@@ -8,22 +8,38 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
+    steps:
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          host: 100.48.48.96
+          host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/careercompass
+            set -e
+
+            APP_DIR="/home/ubuntu/careercompass"
+            REPO_URL="https://github.com/YOUR_USERNAME/YOUR_REPO.git"
+
+            # Create directory if it doesn't exist
+            mkdir -p $APP_DIR
+            cd $APP_DIR
+
+            # Clone repo if not already cloned
+            if [ ! -d ".git" ]; then
+              echo "Cloning repository..."
+              git clone $REPO_URL .
+            fi
+
+            echo "Updating repository..."
             git fetch origin
-            git checkout master
-            git pull origin master
-            docker compose down -v
+            git reset --hard origin/main
+
+            echo "Stopping existing containers..."
+            docker compose down -v || true
+
+            echo "Building and starting containers..."
             docker compose up -d --build
-            docker compose logs -f
+
+            echo "Deployment completed successfully!"
