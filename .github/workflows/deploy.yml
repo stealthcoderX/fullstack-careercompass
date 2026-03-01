@@ -20,7 +20,7 @@ jobs:
             set -e
 
             APP_DIR="/home/ubuntu/careercompass"
-            REPO_URL="https://github.com/YOUR_USERNAME/YOUR_REPO.git"
+            REPO_URL="https://github.com/stealthcoderX/fullstack-careercompass.git"
 
             # Create directory if it doesn't exist
             mkdir -p $APP_DIR
