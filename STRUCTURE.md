@@ -66,7 +66,6 @@ docker compose up --build
 # 3. Access the application
 # http://localhost:5000
 ```
-
 ---
 
 ## 📂 File Organization Guide
