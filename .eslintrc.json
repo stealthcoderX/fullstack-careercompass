@@ -1,0 +1,26 @@
+// CareerCompass ESLint Configuration - Made by stealthcoderX | All rights reserved.
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-undef": "off",
+    "no-unused-vars": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.html"],
+      "parser": "espree",
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ]
+}

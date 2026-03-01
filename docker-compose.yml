@@ -1,0 +1,64 @@
+# ===============================================================================
+# CareerCompass Docker Compose Configuration
+# Made by stealthcoderX | All rights reserved.
+# ===============================================================================
+
+services:
+  # ── MySQL Database ────────────────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: careercompass-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-career_quiz}
+      MYSQL_USER: ${DB_USER:-career_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-career_pass}
+    ports:
+      - "3307:3306"  # Map to 3307 to avoid conflicts with local MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01_init.sql
+    networks:
+      - careercompass-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+
+  # ── Flask Application ─────────────────────────────────────────────────────
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: careercompass-web
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: ${FLASK_ENV:-production}
+      APP_ENV: ${APP_ENV:-production}
+      SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-career_user}
+      DB_PASSWORD: ${DB_PASSWORD:-career_pass}
+      DB_NAME: ${DB_NAME:-career_quiz}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-4}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-120}
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+    networks:
+      - careercompass-network
+    command: bash -c "python /app/backend/app.py"
+
+volumes:
+  mysql_data:
+
+networks:
+  careercompass-network:
+    driver: bridge

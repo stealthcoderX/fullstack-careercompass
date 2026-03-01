@@ -1,0 +1,22 @@
+// CareerCompass HTMLHint Configuration - Made by stealthcoderX | All rights reserved.
+{
+  "tagname-lowercase": true,
+  "attr-lowercase": true,
+  "attr-value-double-quotes": true,
+  "attr-value-not-empty": false,
+  "attr-no-duplication": true,
+  "style-disabled": false,
+  "id-class-value": "underline",
+  "src-not-empty": true,
+  "href-abs-or-rel": false,
+  "attr-unsafe-chars": true,
+  "space-tab-mixed-disabled": "space",
+  "doctype-first": false,
+  "tag-pair": true,
+  "tag-self-close": false,
+  "spec-char-escape": true,
+  "empty-tag-not-self-closed": true,
+  "head-script-disabled": false,
+  "img-alt-require": false,
+  "jinja": true
+}

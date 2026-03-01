@@ -1,0 +1,23 @@
+# CareerCompass Docker Ignore - Made by stealthcoderX | All rights reserved.
+
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.env
+.git
+.gitignore
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+node_modules
+.pytest_cache
+.coverage
+htmlcov
+dist
+build
+.dockerignore
+Dockerfile
+*.md

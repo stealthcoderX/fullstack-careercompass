@@ -1,0 +1,181 @@
+<!-- CareerCompass Results Page | Made by stealthcoderX | All rights reserved. -->
+{% extends "base.html" %}
+{% block title %}Your Results – CareerCompass{% endblock %}
+{% block body_class %}page-result{% endblock %}
+
+{% block body %}
+
+<!-- ── NAV ─────────────────────────────────────────────────────────────── -->
+<nav class="quiz-nav">
+  <a href="{{ url_for('index') }}" class="nav-logo">Career<span>Compass</span></a>
+  <div style="display:flex;align-items:center;gap:16px">
+    <span class="nav-user-name">Hi, {{ user.name.split()[0] }}</span>
+    <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">Sign Out</a>
+  </div>
+</nav>
+
+<!-- ── RESULT HERO ───────────────────────────────────────────────────────── -->
+<section class="result-hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="container" style="text-align:center;position:relative;z-index:1">
+    <div class="confetti-emoji" aria-hidden="true">🎉</div>
+    <div class="badge badge--success">✦ Your Career Match</div>
+    <h1 class="result-career-title">{{ career_icon }} {{ career_label }}</h1>
+
+    <div class="match-badge">
+      <span class="match-pct" id="animPct">0%</span>
+      <div class="match-label">
+        <strong>Match Score</strong>
+        <span>Based on your 15 answers</span>
+      </div>
+    </div>
+
+    <p class="result-desc">{{ career_desc }}</p>
+
+    <div class="result-actions">
+      <a href="{{ url_for('quiz') }}" class="btn btn-gold btn-lg">↺ Retake Quiz</a>
+      <button onclick="window.print()" class="btn btn-ghost btn-lg">📄 Save Report</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESULTS GRID ──────────────────────────────────────────────────────── -->
+<div class="results-grid container">
+
+  <!-- Score Breakdown -->
+  <div class="r-card" data-animate>
+    <div class="r-card-header">
+      <div class="r-icon">📊</div>
+      <div>
+        <h3>Domain Score Breakdown</h3>
+        <p>How you scored across all career categories</p>
+      </div>
+    </div>
+    <div class="score-list">
+      {% for item in sorted_scores %}
+      <div class="score-item">
+        <div class="score-row">
+          <span class="score-name">{{ item.icon }} {{ item.label }}</span>
+          <span class="score-pct">{{ item.pct }}%</span>
+        </div>
+        <div class="bar-track">
+          <!-- htmlhint style-disable-line -->
+          <div class="bar-fill bar-fill--{{ item.key }}"
+               style="--target-width: {{ item.pct }}%; animation-delay: {{ loop.index0 * 0.1 }}s">
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Key Traits -->
+  <div class="r-card" data-animate data-delay="100">
+    <div class="r-card-header">
+      <div class="r-icon">🧬</div>
+      <div>
+        <h3>Your Key Traits</h3>
+        <p>Strengths identified from your answers</p>
+      </div>
+    </div>
+    <div class="traits-grid">
+      {% for icon, label in career_traits %}
+      <div class="trait-pill">
+        <span class="trait-icon">{{ icon }}</span>
+        <span class="trait-name">{{ label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Profile Card -->
+  <div class="r-card" data-animate data-delay="200">
+    <div class="r-card-header">
+      <div class="r-icon">📋</div>
+      <div>
+        <h3>Profile Summary</h3>
+        <p>Your account and quiz details</p>
+      </div>
+    </div>
+    <div class="profile-list">
+      <div class="profile-item"><span>👤</span><span><strong>{{ user.name }}</strong></span></div>
+      <div class="profile-item"><span>✉️</span><span>{{ user.email }}</span></div>
+      <div class="profile-item"><span>📅</span><span>{{ user.created_at.strftime('%d %B %Y') }}</span></div>
+      <div class="profile-item"><span>🏆</span><span>Top match: <strong>{{ career_label }}</strong></span></div>
+    </div>
+  </div>
+
+  <!-- Share -->
+  <div class="r-card r-card--wide" data-animate data-delay="300">
+    <div class="r-card-header">
+      <div class="r-icon">📤</div>
+      <div>
+        <h3>Share Your Results</h3>
+        <p>Let your network know about your career match</p>
+      </div>
+    </div>
+    <div class="share-row">
+      <button class="share-btn" onclick="shareResult('twitter')">🐦 Twitter / X</button>
+      <button class="share-btn" onclick="shareResult('linkedin')">💼 LinkedIn</button>
+      <button class="share-btn" onclick="shareResult('whatsapp')">📱 WhatsApp</button>
+      <button class="share-btn" onclick="copyLink()">🔗 Copy Link</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ────────────────────────────────────────────────────────────── -->
+<footer class="footer" style="margin-top:40px">
+  <div class="container footer-inner">
+    <a href="{{ url_for('index') }}" class="nav-logo">Career<span>Compass</span></a>
+    <p>© 2025 CareerCompass · Your results are private and secure.</p>
+  </div>
+</footer>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Animate match percentage counter
+  /* eslint-disable no-undef */
+  // @ts-ignore - Jinja2 template variable
+  (function() {
+    // @ts-ignore
+    const target = {{ top_pct }};
+    const el = document.getElementById('animPct');
+    let count = 0;
+    const step = Math.max(1, Math.floor(target / 50));
+    const timer = setInterval(() => {
+      count = Math.min(count + step, target);
+      el.textContent = count + '%';
+      if (count >= target) clearInterval(timer);
+    }, 20);
+  })();
+
+  // Share functions
+  // @ts-ignore - Jinja2 template variable
+  const careerLabel = {{ career_label | tojson }};
+
+  function shareResult(platform) {
+    const text = encodeURIComponent(`I just discovered my ideal career is ${careerLabel}! Take the CareerCompass quiz to find yours.`);
+    const url  = encodeURIComponent(window.location.origin);
+    const links = {
+      twitter:  `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+      whatsapp: `https://wa.me/?text=${text}%20${url}`,
+    };
+    if (links[platform]) window.open(links[platform], '_blank', 'noopener');
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.origin).then(() => {
+      const btn = event.target;
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = orig, 2000);
+    });
+  }
+</script>
+{% endblock %}

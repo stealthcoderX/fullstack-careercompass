@@ -1,0 +1,164 @@
+<!-- CareerCompass Landing Page | Made by stealthcoderX | All rights reserved. -->
+{% extends "base.html" %}
+{% block title %}CareerCompass – Discover Your Career Path{% endblock %}
+{% block body_class %}page-landing{% endblock %}
+
+{% block body %}
+
+<!-- ── NAV ─────────────────────────────────────────────────────────────── -->
+<nav class="nav" id="mainNav">
+  <a href="{{ url_for('index') }}" class="nav-logo">Career<span>Compass</span></a>
+  <div class="nav-links">
+    <a href="#features" class="nav-link">How it works</a>
+    <a href="{{ url_for('login') }}" class="nav-link">Sign in</a>
+    <a href="{{ url_for('register') }}" class="btn btn-gold btn-sm">Get Started</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-inner container">
+    <div class="hero-content" data-animate>
+      <div class="badge">✦ AI-Powered Career Matching</div>
+      <h1 class="hero-title">Find Your <em>Perfect</em><br>Career Path</h1>
+      <p class="hero-desc">
+        Answer 15 thoughtfully crafted questions and let our intelligent quiz
+        engine map your personality, skills, and interests to your ideal profession.
+      </p>
+      <div class="hero-actions">
+        <a href="{{ url_for('register') }}" class="btn btn-gold btn-lg">
+          Take the Quiz
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="{{ url_for('login') }}" class="btn btn-ghost btn-lg">Sign In</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">50K+</span><span class="stat-label">Students matched</span></div>
+        <div class="stat"><span class="stat-num">95%</span><span class="stat-label">Accuracy rate</span></div>
+        <div class="stat"><span class="stat-num">120+</span><span class="stat-label">Career paths</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual" data-animate data-delay="150">
+      <div class="career-cards">
+        <div class="career-card" style="--delay:0s">
+          <div class="cc-icon">💻</div>
+          <div class="cc-title">Software Engineer</div>
+          <div class="cc-bar-row"><div class="cc-bar"><div class="cc-fill" style="--w:92%"></div></div><span class="cc-pct">92%</span></div>
+        </div>
+        <div class="career-card" style="--delay:0.8s">
+          <div class="cc-icon">🎨</div>
+          <div class="cc-title">UX Designer</div>
+          <div class="cc-bar-row"><div class="cc-bar"><div class="cc-fill" style="--w:78%"></div></div><span class="cc-pct">78%</span></div>
+        </div>
+        <div class="career-card" style="--delay:0.4s">
+          <div class="cc-icon">📊</div>
+          <div class="cc-title">Data Scientist</div>
+          <div class="cc-bar-row"><div class="cc-bar"><div class="cc-fill" style="--w:85%"></div></div><span class="cc-pct">85%</span></div>
+        </div>
+        <div class="career-card" style="--delay:1.2s">
+          <div class="cc-icon">📈</div>
+          <div class="cc-title">Product Manager</div>
+          <div class="cc-bar-row"><div class="cc-bar"><div class="cc-fill" style="--w:71%"></div></div><span class="cc-pct">71%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ──────────────────────────────────────────────────────────── -->
+<section class="features" id="features">
+  <div class="container">
+    <p class="section-label">Why CareerCompass</p>
+    <h2 class="section-title">Everything you need to chart<br>your future</h2>
+    <div class="features-grid">
+      <div class="feature-card" data-animate>
+        <div class="fc-icon">🧠</div>
+        <h3>Smart Assessment</h3>
+        <p>15 carefully crafted questions covering personality, cognitive style, interests, and work preferences.</p>
+      </div>
+      <div class="feature-card" data-animate data-delay="100">
+        <div class="fc-icon">⚡</div>
+        <h3>Instant Results</h3>
+        <p>Get your full career profile and top matches within seconds of completing the quiz.</p>
+      </div>
+      <div class="feature-card" data-animate data-delay="200">
+        <div class="fc-icon">📈</div>
+        <h3>Score Breakdown</h3>
+        <p>Visual charts show how you score across all career domains with actionable insights.</p>
+      </div>
+      <div class="feature-card" data-animate data-delay="300">
+        <div class="fc-icon">🎯</div>
+        <h3>Precision Matching</h3>
+        <p>Our algorithm compares your profile against 120+ career paths to find the best fit.</p>
+      </div>
+      <div class="feature-card" data-animate data-delay="400">
+        <div class="fc-icon">🔒</div>
+        <h3>Secure & Private</h3>
+        <p>Your data is encrypted and never shared. Retake the quiz anytime to track growth.</p>
+      </div>
+      <div class="feature-card" data-animate data-delay="500">
+        <div class="fc-icon">📱</div>
+        <h3>Mobile Friendly</h3>
+        <p>Fully responsive interface designed for seamless use on any device, anytime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box" data-animate>
+      <h2>Ready to discover your calling?</h2>
+      <p>Join thousands of students who've already found their direction.</p>
+      <a href="{{ url_for('register') }}" class="btn btn-gold btn-lg">
+        Start Free Quiz
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <a href="{{ url_for('index') }}" class="nav-logo">Career<span>Compass</span></a>
+    <p>© 2025 CareerCompass. All rights reserved.</p>
+  </div>
+</footer>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Sticky nav shadow on scroll
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('nav--scrolled', window.scrollY > 20);
+  });
+
+  // Mobile hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.querySelector('.nav-links');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('nav-links--open');
+    hamburger.classList.toggle('is-open');
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+{% endblock %}

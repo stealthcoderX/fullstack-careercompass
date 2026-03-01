@@ -1,0 +1,52 @@
+<!-- CareerCompass Quiz Page | Made by stealthcoderX | All rights reserved. -->
+{% extends "base.html" %}
+{% block title %}Career Quiz – CareerCompass{% endblock %}
+{% block body_class %}page-quiz{% endblock %}
+
+{% block body %}
+
+<!-- ── NAV ─────────────────────────────────────────────────────────────── -->
+<nav class="quiz-nav">
+  <a href="{{ url_for('index') }}" class="nav-logo">Career<span>Compass</span></a>
+  <div class="quiz-counter">
+    Question <strong id="navCount">1</strong> of {{ total }}
+  </div>
+  <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">✕ Exit</a>
+</nav>
+
+<!-- ── PROGRESS BAR ──────────────────────────────────────────────────────── -->
+<div class="progress-wrap">
+  <div class="progress-track">
+    <!-- htmlhint style-disable-line -->
+    <div class="progress-fill" id="progressFill"
+         style="width: {{ (1 / total * 100)|round(2) }}%"></div>
+  </div>
+</div>
+
+<!-- ── QUIZ STAGE ────────────────────────────────────────────────────────── -->
+<main class="quiz-main">
+  <div class="question-stage" id="questionStage">
+    <!-- Rendered by quiz.js -->
+  </div>
+</main>
+
+<!-- ── HIDDEN SUBMIT FORM ─────────────────────────────────────────────────── -->
+<form id="quizForm" method="POST" action="{{ url_for('submit') }}" style="display:none">
+  <!-- answer inputs injected by JS before submit -->
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Pass question data from Flask to JS -->
+<script>
+  /* globals QUIZ_DATA, QUIZ_TOTAL, QUIZ_SUBMIT_URL */
+  // @ts-ignore - Jinja2 template variables injected by Flask
+  const QUIZ_DATA = {{ questions | tojson }};
+  // @ts-ignore
+  const QUIZ_TOTAL = {{ total }};
+  // @ts-ignore
+  const QUIZ_SUBMIT_URL = "{{ url_for('submit') }}";
+</script>
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

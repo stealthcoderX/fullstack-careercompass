@@ -1,0 +1,42 @@
+<!-- CareerCompass Authentication Layout | Made by stealthcoderX | All rights reserved. -->
+{% extends "base.html" %}
+{% block body_class %}page-auth{% endblock %}
+
+{% block body %}
+<div class="auth-wrap">
+
+  <!-- Left decorative panel -->
+  <div class="auth-panel">
+    <a href="{{ url_for('index') }}" class="nav-logo" style="position:relative;z-index:1">Career<span>Compass</span></a>
+
+    <div class="auth-panel-body">
+      {% block panel_content %}{% endblock %}
+    </div>
+
+    <p class="auth-panel-footer">© 2025 CareerCompass</p>
+    <div class="orb orb-1" style="position:absolute"></div>
+    <div class="orb orb-2" style="position:absolute"></div>
+  </div>
+
+  <!-- Right form panel -->
+  <div class="auth-form-panel">
+    <div class="auth-form-inner">
+
+      <!-- Flash messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}" role="alert">
+            <span class="flash-icon">
+              {% if category == 'error' %}✕{% elif category == 'success' %}✓{% else %}ℹ{% endif %}
+            </span>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endwith %}
+
+      {% block form_content %}{% endblock %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
