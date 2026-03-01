@@ -42,7 +42,6 @@ from flask_login import (
     logout_user,
 )
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import check_password_hash, generate_password_hash
 
 from config import get_config
 from questions import (
@@ -84,10 +83,12 @@ class User(UserMixin, db.Model):
     created_at       = db.Column(db.DateTime,     nullable=False, default=datetime.utcnow)
 
     def set_password(self, plain: str) -> None:
-        self.password_hash = generate_password_hash(plain)
+        """Store the raw password string without hashing (NOT recommended for production)."""
+        self.password_hash = plain
 
     def verify_password(self, plain: str) -> bool:
-        return check_password_hash(self.password_hash, plain)
+        """Compare the provided password directly to the stored value."""
+        return self.password_hash == plain
 
     def get_scores(self) -> dict[str, int]:
         if self.score_json:
